@@ -9,17 +9,24 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
+@SessionScoped
 public class Events {
     @Qualifier
-    @Target({FIELD, PARAMETER})
+    @SessionScoped
+    @Target({ FIELD, PARAMETER })
     @Retention(RUNTIME)
     public @interface Added {
     }
 
     @Qualifier
-    @Target({FIELD, PARAMETER})
+    @Target({ FIELD, PARAMETER })
     @Retention(RUNTIME)
     public @interface Deleted {
+    }
+
+    @Qualifier
+    @Target({ FIELD, PARAMETER })
+    @Retention(RUNTIME)
+    public @interface Updated {
     }
 }

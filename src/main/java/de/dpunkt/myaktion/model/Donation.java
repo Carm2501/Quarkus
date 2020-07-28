@@ -1,18 +1,38 @@
 package de.dpunkt.myaktion.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Donation {
+
+    @GeneratedValue
+    @Id
+    private Long id;
     private Double amount;
     private String donorName;
     private Boolean receiptRequested;
     private Status status;
-    private Account account;
+    //Attribute von Account hinzugefügt
+    private String accountName;
+    private String nameOfBank;
+    private String iban;
+
+    @ManyToOne
+    private Campaign campaign;
 
     public enum Status {
         TRANSFERRED, IN_PROCESS;
     }
 
-    public Donation() {
-        this.account = new Account();
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Double getAmount() {
@@ -47,13 +67,35 @@ public class Donation {
         this.status = status;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
+    public String getNameOfBank() {
+        return nameOfBank;
+    }
 
+    public void setNameOfBank(String nameOfBank) {
+        this.nameOfBank = nameOfBank;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
+    }
 }

@@ -2,18 +2,43 @@ package de.dpunkt.myaktion.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+@NamedQueries({
+    @NamedQuery(name = Campaign.findAll, query = "SELECT c FROM Campaign c ORDER BY c.name"),
+    @NamedQuery(name = Campaign.getAmountDonatedSoFar, query = "SELECT SUM(d.amount) FROM Donation d WHERE d.campaign = :campaign")
+    })
+
+@Entity
 public class Campaign {
+
+    public static final String findAll = "Campaign.findAll";
+    public static final String getAmountDonatedSoFar = "Campaign.getAmountDonatedSoFar";
+    
     private String name;
     private Double targetAmount;
     private Double donationMinimum;
+    @Transient
     private Double amountDonatedSoFar;
-    private Account account;
-    private Long id;
-    private List<Donation> donations;
+    //Attribute von Account hinzugefügt
+    private String accountName;
+    private String nameOfBank;
+    private String iban;
 
-    public Campaign() {
-        account = new Account();
-    }
+  
+    @GeneratedValue
+    @Id
+    private Long id;
+
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.REMOVE)
+    private List<Donation> donations;
 
     public String getName() {
         return name;
@@ -47,14 +72,30 @@ public class Campaign {
         this.amountDonatedSoFar = amountDonatedSoFar;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
+    public String getNameOfBank() {
+        return nameOfBank;
+    }
+
+    public void setNameOfBank(String nameOfBank) {
+        this.nameOfBank = nameOfBank;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+    
     public void setId(Long id) {
         this.id = id;
     }

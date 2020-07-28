@@ -2,13 +2,18 @@ package de.dpunkt.myaktion.controller;
 
 import de.dpunkt.myaktion.data.CampaignProducer;
 import de.dpunkt.myaktion.model.Campaign;
+import de.dpunkt.myaktion.model.Donation;
+import de.dpunkt.myaktion.services.DonationService;
 import de.dpunkt.myaktion.util.Events.Deleted;
 
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.io.Serializable;
+import java.util.List;
 
 @ViewScoped
 @Named
@@ -17,11 +22,16 @@ public class ListCampaignsController implements Serializable {
     private static final long serialVersionUID = 8693277383648025822L;
 
     @Inject
-    private CampaignProducer campaignProducer;
+    @SessionScoped
+    CampaignProducer campaignProducer;
 
     @Inject
     @Deleted
-    private Event<Campaign> campaignDeleteEvent;
+    Event<Campaign> campaignDeleteEvent;
+
+    @Inject
+    @SessionScoped
+    DonationService donationService;
 
     private Campaign campaignToDelete;
 
@@ -41,6 +51,8 @@ public class ListCampaignsController implements Serializable {
     }
 
     public String doListDonations(Campaign campaign) {
+        final List<Donation> donations = donationService.getDonationList(campaign.getId());
+        campaign.setDonations(donations);
         campaignProducer.setSelectedCampaign(campaign);
         return Pages.LIST_DONATIONS;
     }
@@ -51,6 +63,7 @@ public class ListCampaignsController implements Serializable {
 
     public void commitDeleteCampaign() {
         campaignDeleteEvent.fire(campaignToDelete);
+
     }
 
 }

@@ -1,15 +1,13 @@
 package de.dpunkt.myaktion.controller;
 
 import de.dpunkt.myaktion.model.Donation;
+import de.dpunkt.myaktion.services.DonationService;
 
 import javax.annotation.PostConstruct;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ResourceBundle;
-
 
 @ViewScoped
 @Named
@@ -21,8 +19,8 @@ public class DonateMoneyController implements Serializable {
     private Long campaignId;
     private Donation donation;
 
-  
-
+    @Inject
+    DonationService donationService;
 
     @PostConstruct
     public void init() {
@@ -62,8 +60,8 @@ public class DonateMoneyController implements Serializable {
     }
 
     public String doDonation() {
-        
-        
+
+        donationService.addDonation(getCampaignId(), getDonation());
         init();
         return Pages.DONATE_MONEY;
     }

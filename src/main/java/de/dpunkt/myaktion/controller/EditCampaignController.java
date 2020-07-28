@@ -3,6 +3,7 @@ package de.dpunkt.myaktion.controller;
 import de.dpunkt.myaktion.data.CampaignProducer;
 import de.dpunkt.myaktion.model.Campaign;
 import de.dpunkt.myaktion.util.Events.Added;
+import de.dpunkt.myaktion.util.Events.Updated;
 
 import javax.enterprise.event.Event;
 import javax.faces.view.ViewScoped;
@@ -17,14 +18,20 @@ public class EditCampaignController implements Serializable {
 
     @Inject
     @Added
-    private Event<Campaign> campaignAddEvent;
+    Event<Campaign> campaignAddEvent;
 
     @Inject
-    private CampaignProducer campaignProducer;
+    CampaignProducer campaignProducer;
+
+    @Inject
+    @Updated
+    Event<Campaign> campaignUpdateEvent;
 
     public String doSave() {
         if (campaignProducer.isAddMode()) {
             campaignAddEvent.fire(campaignProducer.getSelectedCampaign());
+        } else {
+            campaignUpdateEvent.fire(campaignProducer.getSelectedCampaign());
         }
         return Pages.LIST_CAMPAIGNS;
     }

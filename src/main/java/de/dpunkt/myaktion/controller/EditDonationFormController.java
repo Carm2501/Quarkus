@@ -18,9 +18,9 @@ public class EditDonationFormController implements Serializable {
     private String bgColor = "ffffff";
 
     @Inject
-    private CampaignProducer campaignProducer;
+    CampaignProducer campaignProducer;
     @Inject
-    private HttpServletRequest req;
+    HttpServletRequest req;
 
     public String doOk() {
         return Pages.LIST_CAMPAIGNS;
@@ -36,8 +36,8 @@ public class EditDonationFormController implements Serializable {
     }
 
     public String getUrl() {
-        return getAppUrl() + "/" + Pages.DONATE_MONEY + ".jsf" + "?bgColor=" + bgColor
-                + "&textColor=" + textColor + "&campaignId=" + campaignProducer.getSelectedCampaign().getId();
+        return getAppUrl() + "/" + Pages.DONATE_MONEY + ".xhtml" + "?bgColor=" + bgColor + "&textColor=" + textColor
+                + "&campaignId=" + campaignProducer.getSelectedCampaign().getId();
     }
 
     public String getTextColor() {
